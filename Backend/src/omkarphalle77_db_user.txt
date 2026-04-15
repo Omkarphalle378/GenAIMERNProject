@@ -1,0 +1,5 @@
+omkarphalle77_db_user
+
+e5T4lFjslffyps1y
+
+mongodb+srv://omkarphalle77_db_user:e5T4lFjslffyps1y@interview-ai-cluster.lxaqbzd.mongodb.net/interview-master
