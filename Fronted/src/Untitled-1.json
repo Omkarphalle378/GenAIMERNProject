@@ -1,0 +1,183 @@
+{
+  "_id": {
+    "$oid": "69f493804b4f5db066f10ca4"
+  },
+  "matchScore": 88,
+  "technicalQuestions": [
+    {
+      "question": "Explain the difference between the MongoDB and MySQL databases, and give an example of how each is used.",
+      "intention": "Understand the interviewer's ability to explain technical concepts in a clear and concise manner.",
+      "answer": "Sure, MongoDB is a NoSQL database that stores data in JSON-like documents. It is highly scalable and flexible, while MySQL is an SQL database that stores structured data in tables. MongoDB is used for applications that need to store semi-structured or unstructured data, while MySQL is used for applications that need to store structured data."
+    },
+    {
+      "question": "Describe the Node.js architecture and explain how it handles asynchronous operations.",
+      "intention": "Test the interviewer's understanding of Node.js architecture and ability to explain how it handles asynchronous operations.",
+      "answer": "Sure, Node.js is a JavaScript runtime environment that allows developers to build real-time web applications. Node.js uses event-driven architecture to handle asynchronous operations. When a request is received, Node.js creates an event and passes it to the appropriate handler, which can be executed concurrently with other events. Node.js uses event loop to handle these asynchronous operations."
+    },
+    {
+      "question": "Explain the purpose of REST API and how it is used in web application development.",
+      "intention": "Test the interviewer's knowledge of REST API and its role in web application development.",
+      "answer": "Sure, REST API is a set of web architectural techniques and tools that are used to design, build, and maintain web applications. REST API allows client-server communication using HTTP requests and responses. REST API is stateless, meaning each request is independent and does not require previous interactions. REST API allows developers to build scalable and secure web applications."
+    },
+    {
+      "question": "How can you optimize the performance of a web application? Give an example of each optimization technique.",
+      "intention": "Test the interviewer's ability to explain optimization techniques and their impact on application performance.",
+      "answer": "Sure, there are several techniques to optimize the performance of a web application. These include: Using caching to store frequently accessed data, using data compression, using efficient data structures, and using efficient algorithms for data processing. One example of optimizing database performance is to use a distributed database system like MongoDB or Cassandra."
+    },
+    {
+      "question": "Describe the role of React.js in building user interfaces in web applications.",
+      "intention": "Test the interviewer's understanding of React.js and its role in building user interfaces.",
+      "answer": "Sure, React.js is a JavaScript library that allows developers to build reusable user interfaces for web applications. React.js components are built using JavaScript and can be reused across different parts of the application. React.js uses virtual DOM to efficiently update only the necessary parts of the UI, which improves performance."
+    }
+  ],
+  "behavioralQuestions": [
+    {
+      "question": "Describe a situation where you had to handle an error in a MERN stack application.",
+      "intention": "Test the interviewer's ability to describe how to handle an error in a MERN stack application and what steps they would take to recover from the error.",
+      "answer": "Sure, I would first identify the error source and log it to the console. Then, I would check the error message to understand the cause of the error. I would then fix the issue by debugging the code and making necessary changes to the application. Finally, I would test the application to ensure that the error has been resolved."
+    },
+    {
+      "question": "Explain how you would design a scalable and secure web application using the MERN stack.",
+      "intention": "Test the interviewer's ability to design a scalable and secure web application using the MERN stack.",
+      "answer": "Sure, I would start by choosing the right hosting platform for the application, such as AWS or Google Cloud. I would also use a distributed database system like MongoDB or Cassandra for data storage. I would implement proper authentication and authorization mechanisms, such as JWT. I would also use a robust logging and monitoring system to track and debug application performance and security issues. Finally, I would conduct regular security testing to ensure the application is secure from vulnerabilities."
+    },
+    {
+      "question": "Describe a project where you used the MERN stack to build a full-stack web application.",
+      "intention": "Test the interviewer's ability to describe a project where they used the MERN stack to build a full-stack web application.",
+      "answer": "Sure, I led the development of a real-time collaboration tool for a social networking platform. We used the MERN stack to build the core features of the application, including user authentication, chat functionality, and file sharing. We also used MongoDB for data storage, Node.js for server-side processing, React.js for client-side rendering, and Express.js for API development."
+    },
+    {
+      "question": "Explain your approach to unit testing in a MERN stack application.",
+      "intention": "Test the interviewer's understanding of unit testing and their ability to explain their approach to unit testing in a MERN stack application.",
+      "answer": "Sure, I would write unit tests for individual components of the application, such as the user service, the chat service, and the file service. I would use a mocking library to isolate the components and test them independently. I would then integrate the components together and test the entire application end-to-end."
+    },
+    {
+      "question": "Describe your experience working in a team environment using the MERN stack.",
+      "intention": "Test the interviewer's ability to describe their experience working in a team environment using the MERN stack.",
+      "answer": "Sure, I have worked in a team of developers using the MERN stack. We used version control system like Git to manage code and used a continuous integration and continuous delivery (CI/CD) pipeline to automate the build and deployment process. I also participated in code reviews and collaborated with other developers to ensure the quality of the application."
+    }
+  ],
+  "skillGaps": [],
+  "preparationPlan": [
+    {
+      "day": 1,
+      "focus": "MERN Stack Fundamentals",
+      "tasks": [
+        "Read and understand the basics of the MERN stack, including MongoDB, Express.js, React.js, and Node.js.",
+        "Use online resources such as MDN Web Docs, and freecodecamp tutorials to gain a foundational understanding of these technologies.",
+        "Complete beginner-level coding exercises on platforms like HackerRank and freeCodeCamp to solidify your understanding."
+      ],
+      "_id": {
+        "$oid": "69f493804b4f5db066f10ca5"
+      }
+    },
+    {
+      "day": 2,
+      "focus": "MongoDB Basics",
+      "tasks": [
+        "Get familiar with MongoDB by understanding its data model, queries, and basic operations.",
+        "Use online tutorials and interactive courses on MongoDB Atlas to learn how to set up and manage a MongoDB instance.",
+        "Practice connecting to a MongoDB instance using a code editor and performing basic CRUD operations."
+      ],
+      "_id": {
+        "$oid": "69f493804b4f5db066f10ca6"
+      }
+    },
+    {
+      "day": 3,
+      "focus": "Express.js Fundamentals",
+      "tasks": [
+        "Learn the basics of Node.js, including event-driven programming, asynchronous functions, and modules.",
+        "Use online tutorials and code examples to understand how to set up a Node.js server and handle HTTP requests.",
+        "Build simple REST API endpoints using Express.js to practice working with JSON data."
+      ],
+      "_id": {
+        "$oid": "69f493804b4f5db066f10ca7"
+      }
+    },
+    {
+      "day": 4,
+      "focus": "React.js Basics",
+      "tasks": [
+        "Get comfortable with JavaScript syntax and learn the fundamentals of React.js, including components, state management, and JSX.",
+        "Use online tutorials and resources like freeCodeCamp to learn about React's virtual DOM and how to build components.",
+        "Build simple React applications using create-react-app and practice managing state and rendering UI elements."
+      ],
+      "_id": {
+        "$oid": "69f493804b4f5db066f10ca8"
+      }
+    },
+    {
+      "day": 5,
+      "focus": "REST API Integration",
+      "tasks": [
+        "Learn about REST APIs and their importance in building full-stack applications. Use online tutorials to understand how to design and implement REST API endpoints.",
+        "Connect MongoDB to your Express.js server and perform CRUD (create, read, update, and delete) operations using the MERN stack.",
+        "Practice building a simple API using Node.js and Express.js that interacts with MongoDB."
+      ],
+      "_id": {
+        "$oid": "69f493804b4f5db066f10ca9"
+      }
+    },
+    {
+      "day": 6,
+      "focus": "Database Design and Optimization",
+      "tasks": [
+        "Learn about relational databases and the importance of database design. Use online resources and practice building databases using MySQL and MongoDB.",
+        "Optimize your MongoDB database for better performance by understanding indexing and queries.",
+        "Implement proper database security practices to protect sensitive data and prevent unauthorized access."
+      ],
+      "_id": {
+        "$oid": "69f493804b4f5db066f10caa"
+      }
+    },
+    {
+      "day": 7,
+      "focus": "Project Work",
+      "tasks": [
+        "Work on a real-world full-stack web application using the MERN stack. Focus on designing, building, and testing a complete web application.",
+        "Choose a specific project from the job description and apply the knowledge and skills you have acquired during the preparation phase.",
+        "Document your project in a clear and concise manner using tools like GitHub repositories and README files."
+      ],
+      "_id": {
+        "$oid": "69f493804b4f5db066f10cab"
+      }
+    }
+  ],
+  "user": {
+    "$oid": "69c641859fd324d8c85e88a3"
+  },
+  "createdAt": {
+    "$date": "2026-05-01T11:50:24.571Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-01T11:50:24.571Z"
+  },
+  "__v": 0
+}
+
+We are looking for a MERN Stack Developer with strong knowledge of MongoDB, Express.js, React.js, and Node.js.
+
+Responsibilities:
+- Build scalable web applications using MERN stack
+- Develop RESTful APIs
+- Work with MongoDB database and optimize queries
+- Implement authentication using JWT
+- Collaborate with frontend and backend teams
+
+Requirements:
+- Strong knowledge of JavaScript and ES6
+- Experience with React hooks and state management
+- Understanding of Node.js event loop
+- Knowledge of REST API design
+- Basic understanding of system design
+- Familiarity with Git and version control
+
+
+I am a 3rd year Computer Science student with experience in MERN stack development. I have built projects like a resume analyzer and a chat application using React, Node.js, and MongoDB. 
+
+I am comfortable with JavaScript, React hooks, and REST APIs. I have basic knowledge of data structures and algorithms.
+
+However, I have limited experience in system design, performance optimization, and advanced backend concepts like message queues and caching.
+
+I am actively preparing for software engineering placements.

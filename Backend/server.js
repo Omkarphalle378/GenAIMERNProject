@@ -1,8 +1,11 @@
 require("dotenv").config()
-const app = require("./src/app") 
-const cookieParser = require("cookie-parser")
+const app = require("./src/app")
 const connectToDB = require("./src/config/database")
-const authRouter = require("./src/routes/auth.routes")
+
+if (!process.env.JWT_SECRET) {
+  console.error("FATAL: JWT_SECRET is missing. Set it in Backend/.env")
+  process.exit(1)
+}
 
 connectToDB();
 

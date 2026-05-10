@@ -1,366 +1,373 @@
-.interview-page {
-  height: 100vh;
-  overflow: hidden;
+// ── Variables ────────────────────────────────────────────────────────────────
+$bg-page:        #0d1117;
+$bg-card:        #161b22;
+$bg-panel:       #1c2230;
+$bg-input:       #1e2535;
+$border-color:   #2a3348;
+$text-primary:   #e6edf3;
+$text-muted:     #7d8590;
+$accent:         #ff2d78;
+$accent-alt:     #ff6b9d;
+$badge-required: #ff2d78;
+$badge-best:     #ff2d78;
+$info-bg:        #1b2a4a;
+$info-border:    #2d4a7a;
+$font-stack:     system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+// ── Page Shell ───────────────────────────────────────────────────────────────
+.home-page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: $bg-page;
+    color: $text-primary;
+    font-family: $font-stack;
 
-  padding: 1rem;
-
-  background:
-    radial-gradient(circle at 20% 20%, rgba(157, 77, 255, 0.2), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(255, 44, 120, 0.15), transparent 40%),
-    #080b12;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    gap: 2rem;
 }
 
-// .interview-page {
-//   background:
-//     radial-gradient(circle at 20% 20%, rgba(157, 77, 255, 0.2), transparent 40%),
-//     radial-gradient(circle at 80% 0%, rgba(255, 44, 120, 0.15), transparent 40%),
-//     #080b12;
-// }
+// ── Page Header ──────────────────────────────────────────────────────────────
+.page-header {
+    text-align: center;
 
+    h1 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: $text-primary;
+    }
+
+    p {
+        color: $text-muted;
+        font-size: 0.95rem;
+        max-width: 480px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .highlight {
+        color: $accent;
+    }
+}
+
+// ── Main Card ─────────────────────────────────────────────────────────────────
 .interview-card {
-  height: calc(100vh - 40px); 
-  width: min(1200px, 100%);
-  background: rgba(15, 20, 32, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
-  padding: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+    width: 100%;
+    max-width: 900px;
+    background-color: $bg-card;
+    border: 1px solid $border-color;
+    border-radius: 1rem;
+    overflow: hidden;
+
+    &__body {
+        display: flex;
+        min-height: 520px;
+    }
+
+    &__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+        border-top: 1px solid $border-color;
+
+        .footer-info {
+            font-size: 0.8rem;
+            color: $text-muted;
+        }
+    }
 }
 
-.interview-card__header {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
-.interview-card__header > div {
-  max-width: 650px;
-}
-
-.interview-card__header h1 {
-  margin: 0;
-  font-size: 2rem;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-
-  background: linear-gradient(90deg, #ffffff 40%, #ff2c78, #9d4dff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.interview-card__header p {
-  margin: 0.8rem auto 0;
-  color: #c3cbd8;
-  line-height: 1.6;
-}
-
-.required-pill {
-  align-self: flex-start;
-  padding: 0.75rem 1.1rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ff7faa;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.interview-card__body {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.2rem;
-  overflow: hidden;
+// ── Panels ────────────────────────────────────────────────────────────────────
+.panel-divider {
+    width: 1px;
+    background-color: $border-color;
+    flex-shrink: 0;
 }
 
 .panel {
-  background: rgba(255, 255, 255, 0.04);
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  padding: 1.2rem;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.panel:hover {
-  border: 1px solid rgba(157, 77, 255, 0.4);
-  box-shadow: 0 0 30px rgba(157, 77, 255, 0.15);
-}
-
-.panel__title {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 0.8rem;
-}
-
-.panel__title h2 {
-  margin: 0;
-  color: #ffffff;
-  font-size: 1.2rem;
-}
-
-.panel--right {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-right: 6px;
-}
-
-/* 🔥 THIS IS THE REAL FIX */
-.info-card {
-  margin-top: auto;
-}
-
-
-.panel__label {
-  background: rgba(255, 44, 120, 0.15);
-  color: #ff2c78;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.panel__title--top {
-  align-items: flex-start;
-}
-
-.job-description,
-.self-description {
-  min-height: 140px;
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  padding: 1.25rem 1.2rem;
-  background: rgba(15, 20, 32, 0.95);
-  color: #eef2ff;
-  font-family: inherit;
-  font-size: 0.98rem;
-  resize: none;
-  outline: none;
-  margin-top: 0.2rem;
-}
-.job-description {
-  flex: 1;
-}
-
-.self-description {
-  height: 120px;
-  flex: none;   /* 🔥 THIS FIX */
-}
-
-.job-description:focus {
-  border-color: #9d4dff;
-  box-shadow: 0 0 20px rgba(157, 77, 255, 0.2);
-}
-
-.job-description::placeholder,
-.self-description::placeholder {
-  color: #7c86a1;
-}
-
-.hint {
-  margin: 0;
-  color: #8fa2c0;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.char-count {
-  color: #9aa7c7;
-  font-size: 0.85rem;
-  text-align: right;
-}
-
-.upload-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.upload-section__heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  color: #edf2ff;
-  font-weight: 600;
-}
-
-.upload-tag {
-  color: #ff7faa;
-  font-size: 0.88rem;
-}
-
-.upload-box {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1.2rem;
-  align-items: center;
-  min-height: 150px;
-  padding: 1.35rem 1.5rem;
-  border-radius: 22px;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.02);
-  color: #d1dbea;
-  cursor: pointer;
-}
-
-.upload-box__icon {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  font-size: 1.5rem;
-}
-
-.upload-box__content p {
-  margin: 0;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.upload-box__content span {
-  display: block;
-  margin-top: 0.35rem;
-  color: #9aa7c7;
-  font-size: 0.92rem;
-}
-
-.upload-separator {
-  max-width: 70px;
-  margin: 0 auto;
-  text-align: center;
-  color: #8a9bb7;
-  font-weight: 600;
-}
-
-.input-panel {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;   /* 🔥 space from "OR" */
-  gap: 0.5rem;        /* space between label & textarea */
-}
-
-.panel--right {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  overflow-y: auto;   /* 🔥 IMPORTANT */
-  max-height: 100%;
-}
-
-.input-panel label {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: #c8d4ff;
-  font-size: 0.98rem;
-  font-weight: 600;
-}
-
-.info-card {
-  padding: 1rem 1.2rem;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
-  color: #9aa7c7;
-  line-height: 1.6;
-  font-size: 0.95rem;
-}
-
-.interview-card__footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
-  padding-top: 0.5rem;
-  padding-bottom: 0.8rem; 
-}
-
-.interview-card__footer span {
-  color: #8594b8;
-  font-size: 0.95rem;
-}
-
-.primary-button {
-  border: none;
-  padding: 0.7rem 1.4rem;
-  border-radius: 14px;
-  color: #ffffff;
-
-  background: linear-gradient(135deg, #ff2c78 0%, #9d4dff 100%);
-  font-weight: 700;
-  cursor: pointer;
-
-  box-shadow: 0 10px 30px rgba(157, 77, 255, 0.3);
-  transition: all 0.3s ease;
-
-
-}
-
-.primary-button:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 20px 50px rgba(157, 77, 255, 0.5);
-}
-
-@media (max-width: 980px) {
-  .interview-card__body {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 680px) {
-  .interview-card {
-    padding: 1.5rem;
-  }
-
-  .interview-card__header {
+    flex: 1;
+    display: flex;
     flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+
+        h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: $text-primary;
+            flex: 1;
+        }
+    }
+
+    &__icon {
+        display: flex;
+        align-items: center;
+        color: $accent;
+    }
+
+    &__textarea {
+        flex: 1;
+        width: 100%;
+        background-color: $bg-input;
+        border: 1px solid $border-color;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        color: $text-primary;
+        font-family: $font-stack;
+        font-size: 0.875rem;
+        resize: none;
+        outline: none;
+        transition: border-color 0.2s;
+        line-height: 1.5;
+
+        &::placeholder {
+            color: $text-muted;
+        }
+
+        &:focus {
+            border-color: $accent;
+        }
+
+        &--short {
+            flex: unset;
+            height: 96px;
+        }
+    }
+
+    &--left {
+        position: relative;
+
+        .char-counter {
+            position: absolute;
+            bottom: 2.25rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: $text-muted;
+        }
+    }
+
+    &--right {
+        gap: 0.75rem;
+    }
+}
+
+// ── Badges ────────────────────────────────────────────────────────────────────
+.badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+
+    &--required {
+        background-color: rgba($badge-required, 0.15);
+        color: $badge-required;
+        border: 1px solid rgba($badge-required, 0.3);
+    }
+
+    &--best {
+        background-color: rgba($badge-best, 0.15);
+        color: $badge-best;
+        border: 1px solid rgba($badge-best, 0.3);
+    }
+}
+
+// ── Section Label ─────────────────────────────────────────────────────────────
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: 0.25rem;
+}
+
+// ── Dropzone ──────────────────────────────────────────────────────────────────
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 1.5rem 1rem;
+    background-color: $bg-input;
+    border: 2px dashed $border-color;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+
+    &:hover {
+        border-color: $accent;
+        background-color: rgba($accent, 0.05);
+    }
+
+    &__icon {
+        color: $accent;
+        margin-bottom: 0.25rem;
+    }
+
+    &__title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: $text-primary;
+        margin: 0;
+    }
+
+    &__subtitle {
+        font-size: 0.75rem;
+        color: $text-muted;
+        margin: 0;
+    }
+}
+
+// ── OR Divider ────────────────────────────────────────────────────────────────
+.or-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: $text-muted;
+    font-size: 0.75rem;
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background-color: $border-color;
+    }
+
+    span {
+        white-space: nowrap;
+    }
+}
+
+// ── Self Description ──────────────────────────────────────────────────────────
+.self-description {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+// ── Info Box ──────────────────────────────────────────────────────────────────
+.info-box {
+    display: flex;
     align-items: flex-start;
-  }
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    background-color: $info-bg;
+    border: 1px solid $info-border;
+    border-radius: 0.5rem;
 
-  .upload-box,
-  .panel {
-    padding: 1.2rem;
-  }
+    &__icon {
+        flex-shrink: 0;
+        color: #4a90e2;
+        margin-top: 1px;
+    }
 
-  .upload-box {
-  min-height: 130px;
+    p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: #8ab4f8;
+        line-height: 1.5;
+
+        strong {
+            color: $text-primary;
+        }
+    }
 }
 
-  
+// ── Generate Button ───────────────────────────────────────────────────────────
+.generate-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, $accent 0%, darken($accent, 10%) 100%);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    font-family: $font-stack;
+
+    &:hover {
+        opacity: 0.9;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
 }
 
-.panel--left {
-  display: flex;
-  flex-direction: column;
+.recent-reports{
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 900px;
+
+    .reports-list{
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+
+        .report-item{
+            background-color: $bg-card;
+            border: 1px solid $border-color;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            cursor: pointer;
+            flex-shrink: 0;
+
+            .match-score {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: $accent;
+                align-items: flex-start;
+            }
+        }
+    }
 }
 
-.panel--left .panel__title {
-  margin-bottom: 1rem;
+
+// ── Page Footer ───────────────────────────────────────────────────────────────
+.page-footer {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+        font-size: 0.8rem;
+        color: $text-muted;
+        text-decoration: none;
+        transition: color 0.2s;
+
+        &:hover {
+            color: $text-primary;
+        }
+    }
 }
-
-
-.panel--right::-webkit-scrollbar {
-  width: 4px;
-}
-
-.panel--right::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-}
-
-

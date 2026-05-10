@@ -1,6 +1,61 @@
-import React from "react";
-
+import React, { useState, useRef } from "react";
+import {
+  FaUpload,
+  FaUser,
+  FaBriefcase,
+  FaMagic,
+  FaRobot,
+  FaCheckCircle,
+  FaFileAlt,
+  FaBolt
+} from "react-icons/fa";
+import { useInterview } from "../hooks/useInterview";
+import { useNavigate } from 'react-router'
 const InterviewUI = () => {
+  const { loading, generateReport } = useInterview()
+  const [jobDescription, setJobDescription] = useState("")
+  const [selfDescription, setSelfDescription] = useState("")
+  const resumeInputRef = useRef()
+
+  const navigate = useNavigate()
+
+  const handleGenerateReport = async () => {
+    const resumeFile = resumeInputRef.current.files[0]
+
+    if (!jobDescription?.trim()) {
+      alert("Please enter a job description")
+      return
+    }
+    if (!resumeFile && !selfDescription?.trim()) {
+      alert("Please upload a PDF resume OR enter self description")
+      return
+    }
+
+    try {
+      const data = await generateReport({
+        jobDescription,
+        selfDescription,
+        resumeFile
+      })
+
+      if (data?._id) {
+        navigate(`/interview/${data._id}`)
+      }
+
+    } catch (err) {
+      console.log(err)
+      alert(err.message || "Could not generate the interview plan.")
+    }
+  }
+
+  if (loading) {
+    return (
+      <main className='loading-screen'>
+        <h1>Loading your interview plan...</h1>
+      </main>
+    )
+  }
+
   return (
     <section className="interview-page">
       <div className="interview-card">
@@ -17,12 +72,16 @@ const InterviewUI = () => {
         <div className="interview-card__body">
           <div className="panel panel--left">
             <div className="panel__title">
-              <h2>Target Job Description</h2>
+              <h3>
+                <FaBriefcase style={{ marginRight: "8px" }} />
+                Target Job Description
+              </h3>
               <span className="panel__label">Required</span>
             </div>
             <textarea
+              onChange={(e) => { setJobDescription(e.target.value) }}
               className="job-description"
-              placeholder="Paste the full job description here..."
+              placeholder="Paste the full job description here...\ne.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScript, and large-scale system design..."
               aria-label="Job description"
             />
             <p className="hint">
@@ -34,7 +93,10 @@ const InterviewUI = () => {
 
           <div className="panel panel--right">
             <div className="panel__title panel__title--top">
-              <h2>Your Profile</h2>
+              <h3>
+                <FaUser style={{ marginRight: "8px" }} />
+                Your Profile
+              </h3>
             </div>
 
             <div className="upload-section">
@@ -50,10 +112,11 @@ const InterviewUI = () => {
                 </div>
               </label>
               <input
+                ref={resumeInputRef}
                 hidden
                 id="resumeUpload"
                 type="file"
-                accept=".pdf,.doc,.docx"
+                accept=".pdf"
               />
             </div>
 
@@ -62,6 +125,7 @@ const InterviewUI = () => {
             <div className="input-panel">
               <label htmlFor="selfDescription">Quick Self-Description</label>
               <textarea
+                onChange={(e) => { setSelfDescription(e.target.value) }}
                 id="selfDescription"
                 className="self-description"
                 placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
@@ -77,8 +141,12 @@ const InterviewUI = () => {
         </div>
 
         <div className="interview-card__footer">
-          <span>AI-Powered Strategy Generation • Approx 30s</span>
-          <button className="primary-button">Generate My Interview Strategy</button>
+          <p className="ai-text">
+            <FaRobot style={{ marginRight: "8px" }} />
+            AI-Powered Strategy Generation • Approx 30s
+          </p>
+
+          <button onClick={handleGenerateReport} className="primary-button"><FaMagic style={{ marginRight: "8px" }} />Generate My Interview Strategy</button>
         </div>
       </div>
     </section>

@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken")
 const tokenBlacklistModel = require("../models/blacklist.models")
+const { getTokenFromRequest } = require("../utils/getTokenFromRequest")
 
 async function authUser(req, res, next) {
-  const token = req.cookies.token
+  const token = getTokenFromRequest(req)
 
   if (!token) {
     return res.status(401).json({

@@ -96,7 +96,7 @@ const preparationPlanSchema = new mongoose.Schema({
     type: String,
     required: [true, "Focus is required"]
   },
-  task: [{
+  tasks: [{
     type: String,
     required: [true, "Task is required"]
   }]
@@ -105,6 +105,11 @@ const preparationPlanSchema = new mongoose.Schema({
 })
 
 const interviewReportSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    default: "Interview Preparation Plan"
+  },
+
   jobDescription: {
     type: String,
     required: [true, "Job description is required"]
