@@ -21,6 +21,9 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 }));
 
+app.get("/", (req, res) => {
+  res.send("🚀 HireSmartAI Backend is Running Successfully");
+});
 
 const authRouter = require("./routes/auth.routes");
 const interviewRouter = require("./routes/interview.routes");
