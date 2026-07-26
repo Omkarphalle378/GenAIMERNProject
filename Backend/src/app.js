@@ -23,9 +23,12 @@ app.use(cors({
 
 
 const authRouter = require("./routes/auth.routes");
-const interviewRouter = require("./routes/interview.routes")
+const interviewRouter = require("./routes/interview.routes");
+const errorHandler = require("./middlewares/error.middleware");
 
-app.use("/api/auth", authRouter); // MUST be here
-app.use("/api/interview",interviewRouter)
+app.use("/api/auth", authRouter);
+app.use("/api/interview", interviewRouter);
+
+app.use(errorHandler);
 
 module.exports = app;

@@ -10,7 +10,7 @@ import {
   FaBolt
 } from "react-icons/fa";
 import { useInterview } from "../hooks/useInterview";
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 const InterviewUI = () => {
   const { loading, generateReport } = useInterview()
   const [jobDescription, setJobDescription] = useState("")

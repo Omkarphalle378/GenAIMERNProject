@@ -1,6 +1,6 @@
 const pdfParse = require("pdf-parse");
 const PDFDocument = require("pdfkit");
-const { generateInterviewReport, generatePreparationPlan } = require("../services/ai.service");
+const { generateInterviewReport, generatePreparationPlan, generateSkillQuizService, generateCoverLetterService, evaluateMockAnswerService } = require("../services/ai.service");
 const interviewReportModel = require("../models/interviewReport.model");
 
 function buildTitleFromJobDescription(jobDescription) {
@@ -71,6 +71,15 @@ function getDefaultQuestions() {
 }
 
 
+function cleanPdfText(text) {
+  if (!text) return "";
+  return String(text)
+    .replace(/[%ÏÐ]|[\x00-\x09\x0B\x0C\x0E-\x1F\x7F-\x9F\uFEFF\uFFFD]/g, " ")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s*\n+/g, "\n\n")
+    .trim();
+}
+
 /**
  * @description controller to generate the interview report based on user seld description,resume and job description
  */
@@ -90,9 +99,9 @@ async function generateInterviewReportController(req, res) {
         return res.status(400).json({ message: "Resume must be a PDF file" });
       }
       const parsed = await pdfParse(req.file.buffer);
-      resumeContent = (parsed.text || "").trim();
+      resumeContent = cleanPdfText(parsed.text || "");
     } else if (selfDescription && String(selfDescription).trim()) {
-      resumeContent = String(selfDescription).trim();
+      resumeContent = cleanPdfText(selfDescription);
     } else {
       return res.status(400).json({ message: "Resume PDF or self description is required" });
     }
@@ -121,9 +130,9 @@ async function generateInterviewReportController(req, res) {
 
     const sanitizeQuestions = (arr) =>
       arr.map((q = {}) => ({
-        question: q.question || q.prompt || "Sample question",
-        intention: q.intention || q.intent || q.reason || "Check understanding",
-        answer: q.answer || q.modelAnswer || q.sampleAnswer || "Explain with proper example"
+        question: cleanPdfText(q.question || q.prompt || "Sample question"),
+        intention: cleanPdfText(q.intention || q.intent || q.reason || "Check understanding"),
+        answer: cleanPdfText(q.answer || q.modelAnswer || q.sampleAnswer || "Explain with proper example")
       }));
 
     let technicalQuestions = sanitizeQuestions(interviewReportByAi.technicalQuestions || []);
@@ -143,9 +152,9 @@ async function generateInterviewReportController(req, res) {
         focus,
         tasks:
           (day.tasks && day.tasks.length >= 3)
-            ? day.tasks
+            ? day.tasks.map(t => cleanPdfText(t))
             : (day.task && day.task.length >= 3)
-              ? day.task   // 🔥 convert task → tasks
+              ? day.task.map(t => cleanPdfText(t))
               : [
                 `Study ${focus} concepts`,
                 `Practice coding questions on ${focus}`,
@@ -153,20 +162,31 @@ async function generateInterviewReportController(req, res) {
               ]
       };
     });
-    // 🔹 Save to DB
-    const matchScore = Math.floor(Math.random() * 21) + 75;
+
+    // 🔹 Calculate real matchScore & extract dynamic skillGaps
+    let matchScore = typeof interviewReportByAi.matchScore === "number" && interviewReportByAi.matchScore >= 0 && interviewReportByAi.matchScore <= 100
+      ? Math.round(interviewReportByAi.matchScore)
+      : 75;
+
+    let skillGaps = Array.isArray(interviewReportByAi.skillGaps) && interviewReportByAi.skillGaps.length > 0
+      ? interviewReportByAi.skillGaps.map(g => ({
+          skill: cleanPdfText(g.skill || "Technical Skill"),
+          severity: ["low", "medium", "high"].includes(String(g.severity).toLowerCase()) ? String(g.severity).toLowerCase() : "medium"
+        })).filter(g => g.skill)
+      : [
+          { skill: "System Design", severity: "medium" },
+          { skill: "Performance Optimization", severity: "medium" },
+          { skill: "CI/CD Pipeline", severity: "low" }
+        ];
+
     const interviewReport = await interviewReportModel.create({
       user: req.user.id,
       title: buildTitleFromJobDescription(jobDescription),
       resume: resumeContent,
-      selfDescription: selfDescription && String(selfDescription).trim() ? String(selfDescription).trim() : undefined,
-      jobDescription: String(jobDescription).trim(),
+      selfDescription: selfDescription && String(selfDescription).trim() ? cleanPdfText(selfDescription) : undefined,
+      jobDescription: cleanPdfText(jobDescription),
       matchScore,
-      skillGaps: [
-        { skill: "React", severity: "high" },
-        { skill: "Node.js", severity: "medium" },
-        { skill: "MongoDB", severity: "low" }
-      ],
+      skillGaps,
       technicalQuestions,
       behavioralQuestions,
       preparationPlan
@@ -217,7 +237,7 @@ async function getAllInterviewReportsController(req, res) {
 }
 
 /**
- * @description Stream a PDF summary of the interview report (resume excerpt, questions preview, roadmap).
+ * @description Stream a styled PDF summary of the interview report.
  */
 async function generateResumePdfController(req, res) {
   const { interviewReportId } = req.params;
@@ -238,56 +258,172 @@ async function generateResumePdfController(req, res) {
       `attachment; filename="interview-plan-${interviewReportId}.pdf"`
     );
 
-    const doc = new PDFDocument({ margin: 50 });
+    const doc = new PDFDocument({
+      margin: 40,
+      bufferPages: true
+    });
     doc.pipe(res);
 
-    doc.fontSize(18).text("Interview preparation summary", { underline: true });
-    doc.moveDown();
-    doc.fontSize(12).text(`Match score: ${interviewReport.matchScore ?? "—"}%`);
-    doc.moveDown();
+    // Color Palette
+    const primaryColor = "#4f46e5"; // Indigo accent
+    const secondaryColor = "#ec4899"; // Pink accent
+    const darkBg = "#0f172a"; // Slate dark
+    const textDark = "#1e293b";
+    const textMuted = "#64748b";
 
-    doc.fontSize(14).text("Profile / resume (excerpt)", { underline: true });
-    doc.fontSize(10).text((interviewReport.resume || "").slice(0, 4000));
-    doc.moveDown();
+    // ── Document Header ──
+    doc.rect(0, 0, doc.page.width, 85).fill(darkBg);
 
-    if (interviewReport.selfDescription) {
-      doc.fontSize(14).text("Self description", { underline: true });
-      doc.fontSize(10).text(String(interviewReport.selfDescription).slice(0, 2000));
-      doc.moveDown();
+    doc.fillColor("#ffffff").fontSize(20).font("Helvetica-Bold")
+       .text("HireSmart AI", 40, 22);
+    doc.fontSize(10).font("Helvetica")
+       .fillColor("#94a3b8")
+       .text("Tailored Interview Strategy & Preparation Plan", 40, 48);
+
+    // Match Score Pill Badge (top right)
+    const score = interviewReport.matchScore ?? 80;
+    const scoreColor = score >= 80 ? "#22c55e" : score >= 60 ? "#f59e0b" : "#ef4444";
+
+    doc.roundedRect(doc.page.width - 160, 20, 120, 45, 6)
+       .fill(scoreColor);
+    doc.fillColor("#ffffff").fontSize(16).font("Helvetica-Bold")
+       .text(`${score}%`, doc.page.width - 160, 28, { width: 120, align: "center" });
+    doc.fontSize(8).font("Helvetica")
+       .text("MATCH SCORE", doc.page.width - 160, 48, { width: 120, align: "center" });
+
+    doc.y = 105;
+
+    // Helper for Section Titles
+    const renderSectionHeader = (title) => {
+      if (doc.y > doc.page.height - 90) doc.addPage();
+      doc.moveDown(0.5);
+      const startY = doc.y;
+      doc.rect(40, startY, doc.page.width - 80, 24).fill("#e0e7ff");
+      doc.fillColor(primaryColor).fontSize(11).font("Helvetica-Bold")
+         .text(title.toUpperCase(), 50, startY + 6);
+      doc.y = startY + 32;
+    };
+
+    // 1. Report Title & Info
+    doc.fillColor(textDark).fontSize(14).font("Helvetica-Bold")
+       .text(cleanPdfText(interviewReport.title || "Interview Strategy Plan"), 40, doc.y);
+    doc.fontSize(9).font("Helvetica").fillColor(textMuted)
+       .text(`Generated on: ${new Date(interviewReport.createdAt).toLocaleDateString()}`);
+    doc.moveDown(0.5);
+
+    // 2. Skill Gaps Section
+    if (interviewReport.skillGaps && interviewReport.skillGaps.length > 0) {
+      renderSectionHeader("Identified Skill Gaps");
+      let currentX = 40;
+      let currentY = doc.y;
+
+      interviewReport.skillGaps.forEach((gap) => {
+        const skillName = `${cleanPdfText(gap.skill || "Skill")} (${(gap.severity || "medium").toUpperCase()})`;
+        const textWidth = doc.widthOfString(skillName, { font: "Helvetica-Bold", size: 8.5 }) + 16;
+
+        if (currentX + textWidth > doc.page.width - 40) {
+          currentX = 40;
+          currentY += 22;
+        }
+
+        const tagColor = gap.severity === "high" ? "#fee2e2" : gap.severity === "medium" ? "#fef3c7" : "#dcfce7";
+        const tagTextColor = gap.severity === "high" ? "#991b1b" : gap.severity === "medium" ? "#92400e" : "#166534";
+
+        doc.roundedRect(currentX, currentY, textWidth, 18, 4).fill(tagColor);
+        doc.fillColor(tagTextColor).fontSize(8.5).font("Helvetica-Bold")
+           .text(skillName, currentX, currentY + 4, { width: textWidth, align: "center" });
+
+        currentX += textWidth + 8;
+      });
+      doc.y = currentY + 28;
     }
 
-    doc.fontSize(14).text("Job description (excerpt)", { underline: true });
-    doc.fontSize(10).text((interviewReport.jobDescription || "").slice(0, 4000));
-    doc.moveDown();
-
-    doc.fontSize(14).text("Technical questions", { underline: true });
+    // 3. Technical Questions
+    renderSectionHeader("Technical Questions");
     (interviewReport.technicalQuestions || []).forEach((q, i) => {
-      doc.fontSize(11).text(`${i + 1}. ${q.question || ""}`);
-      doc.fontSize(9).fillColor("#444444").text(`Intent: ${q.intention || ""}`);
-      doc.fontSize(9).text(`Answer: ${(q.answer || "").slice(0, 600)}${(q.answer || "").length > 600 ? "…" : ""}`);
-      doc.fillColor("#000000");
-      doc.moveDown(0.5);
+      if (doc.y > doc.page.height - 110) doc.addPage();
+
+      doc.fillColor(primaryColor).fontSize(10).font("Helvetica-Bold")
+         .text(`Q${i + 1}: ${cleanPdfText(q.question || "")}`, 45, doc.y, { width: doc.page.width - 90 });
+
+      if (q.intention) {
+        doc.moveDown(0.2);
+        doc.fontSize(8.5).font("Helvetica-Oblique").fillColor(textMuted)
+           .text(`Intent: ${cleanPdfText(q.intention)}`, 55, doc.y, { width: doc.page.width - 100 });
+      }
+
+      if (q.answer) {
+        doc.moveDown(0.2);
+        doc.fontSize(9).font("Helvetica").fillColor(textDark)
+           .text(`Model Answer: ${cleanPdfText(q.answer)}`, 55, doc.y, { width: doc.page.width - 100 });
+      }
+      doc.moveDown(0.6);
     });
 
-    doc.addPage();
-    doc.fontSize(14).text("Behavioral questions", { underline: true });
+    // 4. Behavioral Questions
+    renderSectionHeader("Behavioral Questions");
     (interviewReport.behavioralQuestions || []).forEach((q, i) => {
-      doc.fontSize(11).text(`${i + 1}. ${q.question || ""}`);
-      doc.fontSize(9).fillColor("#444444").text(`Intent: ${q.intention || ""}`);
-      doc.fontSize(9).text(`Answer: ${(q.answer || "").slice(0, 600)}${(q.answer || "").length > 600 ? "…" : ""}`);
-      doc.fillColor("#000000");
+      if (doc.y > doc.page.height - 110) doc.addPage();
+
+      doc.fillColor(secondaryColor).fontSize(10).font("Helvetica-Bold")
+         .text(`Q${i + 1}: ${cleanPdfText(q.question || "")}`, 45, doc.y, { width: doc.page.width - 90 });
+
+      if (q.intention) {
+        doc.moveDown(0.2);
+        doc.fontSize(8.5).font("Helvetica-Oblique").fillColor(textMuted)
+           .text(`Intent: ${cleanPdfText(q.intention)}`, 55, doc.y, { width: doc.page.width - 100 });
+      }
+
+      if (q.answer) {
+        doc.moveDown(0.2);
+        doc.fontSize(9).font("Helvetica").fillColor(textDark)
+           .text(`Model Answer: ${cleanPdfText(q.answer)}`, 55, doc.y, { width: doc.page.width - 100 });
+      }
+      doc.moveDown(0.6);
+    });
+
+    // 5. Preparation Roadmap
+    renderSectionHeader("Preparation Roadmap");
+    (interviewReport.preparationPlan || []).forEach((day) => {
+      if (doc.y > doc.page.height - 90) doc.addPage();
+
+      doc.fillColor(primaryColor).fontSize(10).font("Helvetica-Bold")
+         .text(`Day ${day.day}: ${cleanPdfText(day.focus || "")}`, 45, doc.y);
+      doc.moveDown(0.2);
+
+      (day.tasks || []).forEach((task) => {
+        doc.fontSize(8.5).font("Helvetica").fillColor(textDark)
+           .text(`•  ${cleanPdfText(task)}`, 55, doc.y, { width: doc.page.width - 100 });
+      });
       doc.moveDown(0.5);
     });
 
-    doc.addPage();
-    doc.fontSize(14).text("Preparation roadmap", { underline: true });
-    (interviewReport.preparationPlan || []).forEach((day) => {
-      doc.fontSize(12).text(`Day ${day.day}: ${day.focus || ""}`, { underline: true });
-      (day.tasks || []).forEach((task) => {
-        doc.fontSize(10).text(`• ${task}`);
-      });
-      doc.moveDown();
-    });
+    // 6. Resume & Job Description Excerpt (Sanitized)
+    if (interviewReport.resume || interviewReport.selfDescription) {
+      renderSectionHeader("Candidate Profile & Resume Excerpt");
+      const profileText = cleanPdfText(interviewReport.resume || interviewReport.selfDescription || "").slice(0, 2000);
+      doc.fontSize(8.5).font("Helvetica").fillColor(textDark)
+         .text(profileText, 45, doc.y, { width: doc.page.width - 90 });
+      doc.moveDown(0.8);
+    }
+
+    if (interviewReport.jobDescription) {
+      renderSectionHeader("Target Job Description Excerpt");
+      const jdText = cleanPdfText(interviewReport.jobDescription).slice(0, 2000);
+      doc.fontSize(8.5).font("Helvetica").fillColor(textDark)
+         .text(jdText, 45, doc.y, { width: doc.page.width - 90 });
+    }
+
+    // Add Page Numbers to all pages
+    const pages = doc.bufferedPageRange();
+    for (let i = 0; i < pages.count; i++) {
+      doc.switchToPage(i);
+      doc.fontSize(8).font("Helvetica").fillColor("#94a3b8")
+         .text(`HireSmart AI • Page ${i + 1} of ${pages.count}`, 40, doc.page.height - 30, {
+           width: doc.page.width - 80,
+           align: "center"
+         });
+    }
 
     doc.end();
   } catch (error) {
@@ -298,9 +434,83 @@ async function generateResumePdfController(req, res) {
   }
 }
 
+/**
+ * @description Generates a 5-question AI skill quiz for a targeted skill.
+ */
+async function generateSkillQuizController(req, res) {
+  try {
+    const { skill } = req.body;
+    if (!skill || !String(skill).trim()) {
+      return res.status(400).json({ message: "Skill parameter is required" });
+    }
+
+    const quiz = await generateSkillQuizService({ skill: String(skill).trim() });
+    res.status(200).json({
+      message: "Skill quiz generated successfully",
+      data: quiz
+    });
+  } catch (error) {
+    console.log("generateSkillQuizController error:", error);
+    res.status(500).json({ message: error.message || "Failed to generate skill quiz" });
+  }
+}
+
+/**
+ * @description Generates a personalized cover letter & recruiter email pitch.
+ */
+async function generateCoverLetterController(req, res) {
+  try {
+    const { jobDescription, resumeText, targetCompany, roleTitle } = req.body;
+
+    const result = await generateCoverLetterService({
+      jobDescription,
+      resumeText,
+      targetCompany,
+      roleTitle
+    });
+
+    res.status(200).json({
+      message: "Cover letter and recruiter pitch generated successfully",
+      data: result
+    });
+  } catch (error) {
+    console.log("generateCoverLetterController error:", error);
+    res.status(500).json({ message: error.message || "Failed to generate cover letter" });
+  }
+}
+
+/**
+ * @description Evaluates a candidate's mock interview answer and returns AI scoring & feedback.
+ */
+async function evaluateMockAnswerController(req, res) {
+  try {
+    const { question, userAnswer, roleTitle } = req.body;
+    if (!question || !String(question).trim()) {
+      return res.status(400).json({ message: "Question parameter is required" });
+    }
+
+    const evaluation = await evaluateMockAnswerService({
+      question,
+      userAnswer,
+      roleTitle
+    });
+
+    res.status(200).json({
+      message: "Mock answer evaluated successfully",
+      data: evaluation
+    });
+  } catch (error) {
+    console.log("evaluateMockAnswerController error:", error);
+    res.status(500).json({ message: error.message || "Failed to evaluate mock answer" });
+  }
+}
+
 module.exports = {
   generateInterviewReportController,
   getInterviewReportByIdController,
   getAllInterviewReportsController,
-  generateResumePdfController
+  generateResumePdfController,
+  generateSkillQuizController,
+  generateCoverLetterController,
+  evaluateMockAnswerController
 };

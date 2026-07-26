@@ -54,3 +54,36 @@ export const generateResumePdf = async ({ interviewReportId }) => {
 
     return response.data
 }
+
+/**
+ * @description Service to generate 5-question AI skill assessment quiz.
+ */
+export const generateSkillQuizApi = async ({ skill }) => {
+    const response = await api.post("/api/interview/quiz/generate", { skill })
+    return response.data
+}
+
+/**
+ * @description Service to generate AI Cover Letter and Recruiter Cold Email Pitch.
+ */
+export const generateCoverLetterApi = async ({ jobDescription, resumeText, targetCompany, roleTitle }) => {
+    const response = await api.post("/api/interview/cover-letter/generate", {
+        jobDescription,
+        resumeText,
+        targetCompany,
+        roleTitle
+    })
+    return response.data
+}
+
+/**
+ * @description Service to evaluate candidate's mock interview answer.
+ */
+export const evaluateMockAnswerApi = async ({ question, userAnswer, roleTitle }) => {
+    const response = await api.post("/api/interview/mock/evaluate", {
+        question,
+        userAnswer,
+        roleTitle
+    })
+    return response.data
+}

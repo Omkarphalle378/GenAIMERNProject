@@ -10,6 +10,7 @@ if (!process.env.JWT_SECRET) {
 connectToDB();
 
 
+// Server listener initialized with automatic DB reconnect
 app.listen(3000,()=>{
   console.log("Server is running on port 3000")
 })

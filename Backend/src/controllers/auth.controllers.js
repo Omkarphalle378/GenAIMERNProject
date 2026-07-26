@@ -6,7 +6,7 @@ const { getTokenFromRequest } = require("../utils/getTokenFromRequest")
 
 const COOKIE_NAME = "token"
 const cookieOptions = {
-  httpOnly: false,
+  httpOnly: true,
   sameSite: "lax",
   path: "/",
   maxAge: 24 * 60 * 60 * 1000

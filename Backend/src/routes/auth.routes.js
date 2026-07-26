@@ -19,11 +19,12 @@ authRouter.post("/register",authController.registerUserController)
 authRouter.post("/login",authController.loginUserController)
 
 /**
- * @route GET /api/auth/logout
- * @description clear token from user coockies and add the token into blacklist
- * @access Public
+ * @route POST /api/auth/logout
+ * @description Clear token from user cookies and add token to blacklist
+ * @access Private
  */
-authRouter.get("/logout",authController.logoutUserController)
+authRouter.post("/logout", authMiddleware.authUser, authController.logoutUserController)
+authRouter.get("/logout", authMiddleware.authUser, authController.logoutUserController)
 
 /**
  * @route GET /api/auth/get-me
