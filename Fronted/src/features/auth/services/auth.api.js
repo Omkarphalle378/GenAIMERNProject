@@ -11,7 +11,7 @@ function resolveApiBaseURL() {
   if (import.meta.env.DEV) {
     return ""
   }
-  return "http://localhost:3000"
+  return "https://hiresmart-backend-lhwv.onrender.com"
 }
 
 export const api = axios.create({
