@@ -71,19 +71,19 @@ const Profile = () => {
         </div>
 
         {/* ── Candidate Analytics Progress Chart Card ── */}
-        <div style={{ padding: '1.75rem', borderRadius: '1.25rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', boxShadow: 'var(--card-shadow)', marginBottom: '1.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ padding: '1.25rem 1rem', borderRadius: '1.25rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', boxShadow: 'var(--card-shadow)', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.85rem' }}>
             <div>
-              <span style={{ fontSize: '0.78rem', fontWeight: '700', uppercase: true, color: 'var(--accent-indigo)', letterSpacing: '0.08em' }}>ANALYTICS ENGINE</span>
+              <span style={{ fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--accent-indigo)', letterSpacing: '0.08em' }}>ANALYTICS ENGINE</span>
               <h2 style={{ margin: '0.2rem 0 0', color: 'var(--text-primary)', fontSize: '1.35rem' }}>ATS Match Score Trend</h2>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{ padding: '0.5rem 1rem', borderRadius: '999px', background: 'var(--badge-bg)', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+              <div style={{ padding: '0.45rem 0.85rem', borderRadius: '999px', background: 'var(--badge-bg)', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Overall Average:</span>
                 <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{avgMatch > 0 ? `${avgMatch}%` : '85%'}</strong>
               </div>
-              <div style={{ padding: '0.5rem 1rem', borderRadius: '999px', background: 'rgba(34, 197, 94, 0.12)', border: '1px solid rgba(34, 197, 94, 0.3)', color: '#22c55e', fontSize: '0.82rem', fontWeight: '700' }}>
+              <div style={{ padding: '0.45rem 0.85rem', borderRadius: '999px', background: 'rgba(34, 197, 94, 0.12)', border: '1px solid rgba(34, 197, 94, 0.3)', color: '#22c55e', fontSize: '0.82rem', fontWeight: '700' }}>
                 🚀 High Readiness
               </div>
             </div>

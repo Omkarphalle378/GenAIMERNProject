@@ -156,13 +156,13 @@ const SkillAssessments = () => {
               <p style={{ fontWeight: '700', fontSize: '0.9rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
                 💡 Select a Topic to Practice:
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.85rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.85rem' }}>
                 {POPULAR_SKILLS.map((skill, idx) => (
                   <div
                     key={idx}
                     onClick={() => handleStartQuiz(skill)}
                     style={{
-                      padding: '1rem',
+                      padding: '0.9rem 1rem',
                       borderRadius: '0.85rem',
                       background: 'var(--bg-panel)',
                       border: '1px solid var(--border-color)',
@@ -173,7 +173,7 @@ const SkillAssessments = () => {
                       transition: 'all 150ms ease'
                     }}
                   >
-                    <span style={{ fontWeight: '700', fontSize: '0.92rem', color: 'var(--text-primary)' }}>{skill}</span>
+                    <span style={{ fontWeight: '700', fontSize: '0.9rem', color: 'var(--text-primary)' }}>{skill}</span>
                     <span style={{ color: 'var(--accent-indigo)', fontWeight: '700' }}>→</span>
                   </div>
                 ))}
@@ -185,20 +185,20 @@ const SkillAssessments = () => {
               <p style={{ fontWeight: '700', fontSize: '0.9rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
                 🔍 Test a Custom Skill Topic:
               </p>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                 <input
                   type='text'
                   placeholder='e.g., GraphQL, Redis, Microservices Architecture...'
                   value={customSkillInput}
                   onChange={(e) => setCustomSkillInput(e.target.value)}
                   className='panel__textarea'
-                  style={{ minHeight: '44px', height: '44px', padding: '0.5rem 1rem' }}
+                  style={{ minHeight: '44px', height: '44px', padding: '0.5rem 1rem', flex: '1 1 200px' }}
                 />
                 <button
                   type='button'
                   onClick={() => handleStartQuiz(customSkillInput)}
                   className='generate-btn'
-                  style={{ whiteSpace: 'nowrap', padding: '0 1.25rem' }}
+                  style={{ whiteSpace: 'nowrap', padding: '0 1.25rem', height: '44px', minHeight: '44px' }}
                 >
                   Generate Quiz
                 </button>
@@ -221,7 +221,7 @@ const SkillAssessments = () => {
           <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             
             {/* Header Status Bar */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.25rem', borderRadius: '0.85rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', padding: '1rem 1.25rem', borderRadius: '0.85rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)' }}>
               <div>
                 <span style={{ fontSize: '0.78rem', fontWeight: '700', uppercase: true, color: 'var(--accent-indigo)', letterSpacing: '0.08em' }}>TOPIC:</span>
                 <strong style={{ marginLeft: '0.5rem', fontSize: '1rem', color: 'var(--text-primary)' }}>{quizData.skill}</strong>
@@ -294,7 +294,7 @@ const SkillAssessments = () => {
                       </div>
 
                       {/* Controls */}
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                         <button
                           type='button'
                           onClick={() => setCurrentQuestionIndex(i => Math.max(0, i - 1))}

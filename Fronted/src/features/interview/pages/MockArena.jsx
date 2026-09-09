@@ -207,7 +207,7 @@ const MockArena = () => {
               <p style={{ fontWeight: '700', fontSize: '0.9rem', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
                 💡 Select a Practice Role Preset:
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1rem' }}>
                 {PRACTICE_PRESETS.map((preset, idx) => (
                   <div
                     key={idx}
@@ -254,12 +254,12 @@ const MockArena = () => {
           <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             
             {/* Header Status Bar */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.25rem', borderRadius: '0.85rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.85rem', padding: '1rem 1.25rem', borderRadius: '0.85rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)' }}>
               <div>
                 <span style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--accent-indigo)', letterSpacing: '0.08em' }}>ROLE:</span>
                 <strong style={{ marginLeft: '0.5rem', fontSize: '0.95rem', color: 'var(--text-primary)' }}>{selectedRole}</strong>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                 <span style={{ fontFamily: 'monospace', fontWeight: '700', fontSize: '0.95rem', color: 'var(--accent-pink)', background: 'rgba(236, 72, 153, 0.12)', padding: '0.3rem 0.75rem', borderRadius: '0.5rem' }}>
                   ⏱️ {formatTime(timerSeconds)}
                 </span>
@@ -270,8 +270,8 @@ const MockArena = () => {
             </div>
 
             {/* Active Question Card */}
-            <div style={{ padding: '1.75rem', borderRadius: '1rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ padding: '1.25rem', borderRadius: '1rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--text-muted)' }}>
                   QUESTION {questionIndex + 1} OF {activeQuestions.length}
                 </span>
@@ -280,7 +280,7 @@ const MockArena = () => {
                 </span>
               </div>
 
-              <h2 style={{ fontSize: '1.2rem', color: 'var(--text-primary)', margin: 0, lineHeight: '1.5' }}>
+              <h2 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0, lineHeight: '1.5' }}>
                 {activeQuestions[questionIndex]}
               </h2>
 
@@ -295,7 +295,7 @@ const MockArena = () => {
                     style={{ minHeight: '160px', padding: '1rem', fontSize: '0.95rem', lineHeight: '1.6' }}
                   />
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', flexWrap: 'wrap', gap: '0.85rem' }}>
                     <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                       {userAnswer.length} characters • {userAnswer.split(/\s+/).filter(Boolean).length} words
                     </span>
@@ -304,7 +304,7 @@ const MockArena = () => {
                       onClick={handleSubmitAnswer}
                       disabled={loading || !userAnswer.trim()}
                       className='generate-btn'
-                      style={{ padding: '0.75rem 1.5rem' }}
+                      style={{ padding: '0.75rem 1.5rem', width: 'auto' }}
                     >
                       {loading ? 'AI is Evaluating Answer...' : '✨ Submit Answer for Feedback'}
                     </button>
@@ -317,12 +317,12 @@ const MockArena = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginTop: '0.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)' }}>
                   
                   {/* Score & Verdict Banner */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', padding: '1.25rem', borderRadius: '0.85rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', padding: '1.25rem', borderRadius: '0.85rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
                     <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: currentEvaluation.score >= 80 ? 'rgba(34, 197, 94, 0.15)' : currentEvaluation.score >= 65 ? 'rgba(245, 158, 11, 0.15)' : 'rgba(239, 68, 68, 0.15)', border: `3px solid ${currentEvaluation.score >= 80 ? '#22c55e' : currentEvaluation.score >= 65 ? '#f59e0b' : '#ef4444'}`, display: 'grid', placeItems: 'center', flexShrink: 0 }}>
                       <strong style={{ fontSize: '1.3rem', color: 'var(--text-primary)' }}>{currentEvaluation.score}</strong>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.78rem', fontWeight: '700', uppercase: true, color: currentEvaluation.score >= 80 ? '#22c55e' : currentEvaluation.score >= 65 ? '#f59e0b' : '#ef4444' }}>
+                      <span style={{ fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', color: currentEvaluation.score >= 80 ? '#22c55e' : currentEvaluation.score >= 65 ? '#f59e0b' : '#ef4444' }}>
                         {currentEvaluation.verdict}
                       </span>
                       <h3 style={{ margin: '0.1rem 0 0', color: 'var(--text-primary)', fontSize: '1.1rem' }}>Answer Feedback Evaluation</h3>
@@ -330,7 +330,7 @@ const MockArena = () => {
                   </div>
 
                   {/* Strengths & Missing Points Grid */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '1rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
                     <div style={{ padding: '1rem', borderRadius: '0.75rem', background: 'rgba(34, 197, 94, 0.08)', border: '1px solid rgba(34, 197, 94, 0.25)' }}>
                       <p style={{ fontWeight: '700', fontSize: '0.85rem', color: '#22c55e', margin: '0 0 0.5rem' }}>✓ Key Answer Strengths:</p>
                       <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.88rem', color: 'var(--text-primary)', display: 'grid', gap: '0.35rem' }}>

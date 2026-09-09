@@ -127,7 +127,7 @@ const ResourcesGuides = () => {
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
             <div>
               <label style={{ display: 'block', fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
                 Target Role Title:
@@ -198,7 +198,7 @@ const ResourcesGuides = () => {
           <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             
             {/* Output Tabs */}
-            <div style={{ display: 'flex', gap: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem', flexWrap: 'wrap' }}>
               <button
                 type='button'
                 onClick={() => setActiveTab('coverLetter')}
@@ -206,7 +206,9 @@ const ResourcesGuides = () => {
                 style={{
                   background: activeTab === 'coverLetter' ? 'var(--accent-indigo)' : 'var(--badge-bg)',
                   color: activeTab === 'coverLetter' ? '#fff' : 'var(--text-primary)',
-                  fontWeight: '700'
+                  fontWeight: '700',
+                  flex: '1 1 auto',
+                  textAlign: 'center'
                 }}
               >
                 📄 Cover Letter
@@ -218,7 +220,9 @@ const ResourcesGuides = () => {
                 style={{
                   background: activeTab === 'coldEmail' ? 'var(--accent-indigo)' : 'var(--badge-bg)',
                   color: activeTab === 'coldEmail' ? '#fff' : 'var(--text-primary)',
-                  fontWeight: '700'
+                  fontWeight: '700',
+                  flex: '1 1 auto',
+                  textAlign: 'center'
                 }}
               >
                 ✉️ Recruiter Cold Email
@@ -230,7 +234,9 @@ const ResourcesGuides = () => {
                 style={{
                   background: activeTab === 'highlights' ? 'var(--accent-indigo)' : 'var(--badge-bg)',
                   color: activeTab === 'highlights' ? '#fff' : 'var(--text-primary)',
-                  fontWeight: '700'
+                  fontWeight: '700',
+                  flex: '1 1 auto',
+                  textAlign: 'center'
                 }}
               >
                 🎯 Matched Highlights
@@ -239,10 +245,10 @@ const ResourcesGuides = () => {
 
             {/* TAB 1: COVER LETTER */}
             {activeTab === 'coverLetter' && (
-              <div style={{ padding: '1.5rem', borderRadius: '1rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ padding: '1.25rem', borderRadius: '1rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                   <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Personalized Cover Letter</h3>
-                  <div style={{ display: 'flex', gap: '0.65rem' }}>
+                  <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
                     <button type='button' onClick={() => copyToClipboard(result.coverLetter, 'Cover Letter')} className='secondary-btn' style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}>
                       📋 Copy
                     </button>
@@ -260,8 +266,8 @@ const ResourcesGuides = () => {
 
             {/* TAB 2: COLD RECRUITER EMAIL */}
             {activeTab === 'coldEmail' && (
-              <div style={{ padding: '1.5rem', borderRadius: '1rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ padding: '1.25rem', borderRadius: '1rem', background: 'var(--bg-panel)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                   <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Recruiter Cold Email Pitch</h3>
                   <button type='button' onClick={() => copyToClipboard(`Subject: ${result.coldEmail?.subject}\n\n${result.coldEmail?.body}`, 'Email Pitch')} className='secondary-btn' style={{ padding: '0.45rem 0.85rem', fontSize: '0.85rem' }}>
                     📋 Copy Full Email
@@ -269,9 +275,9 @@ const ResourcesGuides = () => {
                 </div>
 
                 {/* Subject Box */}
-                <div style={{ padding: '0.85rem 1rem', borderRadius: '0.65rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ padding: '0.85rem 1rem', borderRadius: '0.65rem', background: 'var(--bg-card)', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                   <div>
-                    <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent-indigo)', uppercase: true }}>SUBJECT LINE:</span>
+                    <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--accent-indigo)', textTransform: 'uppercase' }}>SUBJECT LINE:</span>
                     <p style={{ margin: '0.2rem 0 0', fontWeight: '700', color: 'var(--text-primary)', fontSize: '0.95rem' }}>{result.coldEmail?.subject}</p>
                   </div>
                   <button type='button' onClick={() => copyToClipboard(result.coldEmail?.subject, 'Subject Line')} className='secondary-btn' style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem' }}>

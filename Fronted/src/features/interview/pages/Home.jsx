@@ -72,7 +72,7 @@ const Home = () => {
   }
 
   if (loading && !generating) return (
-    <div className='dashboard-page'>
+    <div className='dashboard-page--content'>
       <div className='home-skeleton'>
         <div className='home-skeleton__line home-skeleton__line--title' />
         <div className='home-skeleton__line home-skeleton__line--subtitle' />
